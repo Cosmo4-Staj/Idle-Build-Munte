@@ -3,7 +3,15 @@
 --- !u!78 &1
 TagManager:
   serializedVersion: 2
-  tags: []
+  tags:
+  - Pos
+  - BigStone
+  - Digger
+  - DigPoint
+  - StonePlaceholder
+  - Pickup
+  - Stoneworker
+  - DropPoint
   layers:
   - Default
   - TransparentFX

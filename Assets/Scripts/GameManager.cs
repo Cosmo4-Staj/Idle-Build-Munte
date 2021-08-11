@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using TMPro;
 using UnityEngine;
 using UnityEngine.SceneManagement;
+using UnityEngine.UI;
 
 public class GameManager : MonoBehaviour
 {
@@ -30,6 +31,13 @@ public class GameManager : MonoBehaviour
     private int diggersCount;
     private int stoneworkersCount;
 
+    public Image star1;
+    public Image star2;
+    public Image star3;
+
+    //Superworker
+    public Button superworkerButton;
+
     void Start()
     {
         isGameStarted = false;
@@ -42,7 +50,7 @@ public class GameManager : MonoBehaviour
         moneyManager = FindObjectOfType<MoneyManager>();
         diggerSpawner = FindObjectOfType<DiggerSpawner>();
         stoneworkerSpawner = FindObjectOfType<StoneworkerSpawner>();
- 
+
         diggerSpawner.DiggerSpawn();
         stoneworkerSpawner.StoneworkerSpawn();
 
@@ -54,7 +62,6 @@ public class GameManager : MonoBehaviour
         {
             instance = this;
         }
-
     }
 
     public void AddStrength()
@@ -100,6 +107,17 @@ public class GameManager : MonoBehaviour
         }
         Instantiate(Levels[levelCount], Vector3.zero, Quaternion.identity);
         //Instantiate(Levels[PlayerPrefs.GetInt("LevelNo")], transform.position, Quaternion.identity);
+
+        if (!(PlayerPrefs.GetInt("LevelNo") == 4 || PlayerPrefs.GetInt("LevelNo") == 9))
+        {
+            superworkerButton.gameObject.SetActive(false);
+        }
+
+        if (PlayerPrefs.GetInt("LevelNo") == 4 || PlayerPrefs.GetInt("LevelNo") == 9)
+        {
+            superworkerButton.gameObject.SetActive(true);
+            superworkerButton.interactable = false;
+        }
     }
 
     public void OnLevelStarted()
@@ -111,11 +129,11 @@ public class GameManager : MonoBehaviour
         StartScreen.SetActive(false);
         GameScreen.SetActive(true);
         WinScreen.SetActive(false);
-        
     }
 
     public void OnLevelCompleted()
     {
+        StarCount();
         Time.timeScale = 0;
         StartScreen.SetActive(false);
         GameScreen.SetActive(false);
@@ -166,153 +184,30 @@ public class GameManager : MonoBehaviour
             }
         }
     }
+
+    public void StarCount()
+    {
+        star1.gameObject.SetActive(false);
+        star2.gameObject.SetActive(false);
+        star3.gameObject.SetActive(false);
+
+        int starMoney = moneyManager.currentMoney;
+
+        if (starMoney < 50)
+        {
+            star1.gameObject.SetActive(true);
+        }
+        else if (starMoney >= 50 && starMoney <100)
+        {
+            star1.gameObject.SetActive(true);
+            star2.gameObject.SetActive(true);
+        }
+        else if (starMoney >= 100)
+        {
+            star1.gameObject.SetActive(true);
+            star2.gameObject.SetActive(true); 
+            star3.gameObject.SetActive(true);
+        }
+    }  
+   
 }
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-/*using System.Collections;
-using System.Collections.Generic;
-using TMPro;
-using UnityEngine;
-using UnityEngine.SceneManagement;
-
-public class GameManager : MonoBehaviour
-{
-    public static GameManager instance;
-
-    public float spawnStartTime = 5f;
-    public float spawnRepeatTime = 5f;
-
-    public static bool isGameStarted = false;
-    public static bool isGameEnded = false;
-    public static bool isGameRestarted = false;
-
-    public GameObject StartScreen;
-    public GameObject GameScreen;
-    public GameObject WinScreen;
-
-    public TextMeshProUGUI LevelsText;
-    public List<GameObject> Levels = new List<GameObject>();
-    public int levelCount = 0;
-
-    MoneyManager moneyManager;
-    DiggerSpawner diggerSpawner;
-    StoneworkerSpawner stoneworkerSpawner;
-
-    void Start()
-    {
-        moneyManager = FindObjectOfType<MoneyManager>();
-        diggerSpawner = FindObjectOfType<DiggerSpawner>();
-        stoneworkerSpawner = FindObjectOfType<StoneworkerSpawner>();
-
-        diggerSpawner.DiggerSpawn();
-        stoneworkerSpawner.StoneworkerSpawn();
-
-        LevelsText.text = "Level " + (levelCount + 1);
-        StartScreen.SetActive(true);
-        GameScreen.SetActive(false);
-        WinScreen.SetActive(false);
-        StartGame();
-    }
-
-    void Update()
-    {
-        //LevelsText.GetComponent<TextMeshProUGUI>().SetText("Level: " + (levelCount + 1).ToString());
-    }
-
-    private void Awake()
-    {
-        if (instance == null)
-        {
-            instance = this;
-        }
-    }
-
-    public void AddStrength()
-    {
-        spawnStartTime -= 0.1f;
-        spawnRepeatTime -= 0.1f;
-        moneyManager.SubtractMoney(15);
-    }
-
-    public void StartGame()
-    {
-
-        if (isGameRestarted)
-        {
-            StartScreen.SetActive(false);
-            GameScreen.SetActive(true);
-        }
-        levelCount = PlayerPrefs.GetInt("levelCount", levelCount);
-
-        Debug.Log("level uretildi");
-        if (levelCount < 0 || levelCount >= Levels.Count)
-        {
-            levelCount = 0;
-            Debug.Log(levelCount);
-            PlayerPrefs.SetInt("levelCount", levelCount);
-        }
-
-        CreateLevel(levelCount);
-    }
-
-    public void CreateLevel(int Levelindex)
-    {
-        Instantiate(Levels[Levelindex]);
-    }
-
-    public void StartTheGame()
-    {
-        StartScreen.SetActive(false);
-        GameScreen.SetActive(true);
-        isGameStarted = true;
-    }
-
-    public void NextLevel()
-    {
-        levelCount++;
-        PlayerPrefs.SetInt("LevelNo", levelCount);
-        isGameEnded = false;
-        isGameRestarted = true;
-        isGameStarted = true;
-        SceneManager.LoadScene(SceneManager.GetActiveScene().buildIndex);
-    }
-
-    public void RestartLevel()
-    {
-        isGameRestarted = true;
-        isGameStarted = true;
-        isGameEnded = false;
-        SceneManager.LoadScene(SceneManager.GetActiveScene().buildIndex);
-    }
-
-    public void OnLevelStarted()
-    {
-        isGameRestarted = true;
-        isGameStarted = true;
-        StartScreen.SetActive(false);
-    }
-
-    public void OnLevelCompleted()
-    {
-        isGameEnded = true;
-        GameScreen.SetActive(false);
-        WinScreen.SetActive(true);
-    }
-}*/

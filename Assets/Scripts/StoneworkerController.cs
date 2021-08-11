@@ -2,6 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.AI;
+using UnityEngine.UI;
 
 public class StoneworkerController : MonoBehaviour
 {
@@ -21,17 +22,27 @@ public class StoneworkerController : MonoBehaviour
     [SerializeField] GameObject otherObj;
     [SerializeField] bool isPicked = false;
 
+    public int currentCubeNumber;
+    public int totalCubeNumber;
+
     void Start()
     {
         pickedUpStone.SetActive(false);
         stoneSpawner = FindObjectOfType<StoneSpawner>();
+        totalCubeNumber = FindObjectOfType<Build>().building.Count;
         build = FindObjectOfType<Build>();
         anim = gameObject.GetComponent<Animator>();
         moneyManager = FindObjectOfType<MoneyManager>();
+
+        currentCubeNumber = 0;
     }
 
     void Update()
     {
+        //for progress bar
+        currentCubeNumber = build.itemNum;
+        FindObjectOfType<GameUI>().SetProgress(currentCubeNumber /(float) totalCubeNumber);
+
         anim.SetBool("walk", true);
 
         //if there is no target find stone and set target to this stone
@@ -53,7 +64,6 @@ public class StoneworkerController : MonoBehaviour
         if (other.gameObject != target) return;
 
         otherObj = other.gameObject;
-        Debug.Log(otherObj);
         switch (otherObj.tag)
         {
             //if stoneworker touches stone object -> then remove stone from the list of stones, destroy targeted stone and change destination to drop point
@@ -71,8 +81,8 @@ public class StoneworkerController : MonoBehaviour
 
             //if stoneworker reaches the drop point -> disable stone object in vagoon and change the destination point back to any stone from the list
             case "DropPoint":
-                pickedUpStone.SetActive(false);
                 //building
+                pickedUpStone.SetActive(false);
                 Build.Instance.Activate();
                 target = null;
                 isPicked = false;
@@ -87,6 +97,7 @@ public class StoneworkerController : MonoBehaviour
     {
         pickedUpStone.SetActive(true);
     }
+
 }
 
 

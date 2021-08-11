@@ -6,7 +6,8 @@ using UnityEngine.UI;
 
 public class MoneyManager : MonoBehaviour
 {
-    StoneworkerController stoneworkerController;
+    GameUI gameUI;
+
     public TextMeshProUGUI totalMoneyText;
     public TextMeshProUGUI stoneworkerMoneyText;
     public TextMeshProUGUI minerMoneyText;
@@ -16,23 +17,25 @@ public class MoneyManager : MonoBehaviour
 
     public Button stoneworkerButton;
     public Button minerButton;
-    public Button powerButton;
+    public Button strengthButton;
+    public Button superworkerButton;
 
     public bool isFull = false;
-    public int fee;
-    public int stoneworkerSub = 5;
-    public int minerSub = 7;
-    public int strengthSub = 15;
+    public int stoneworkerSub;
+    public int minerSub;
+    public int strengthSub;
 
     void Start()
     {
-        stoneworkerController = FindObjectOfType<StoneworkerController>();
-
-        //currentMoney = 15;
+        gameUI = FindObjectOfType<GameUI>();
         totalMoneyText = GetComponent<TextMeshProUGUI>();
         stoneworkerButton.interactable = false;
         minerButton.interactable = false;
-        powerButton.interactable = false;
+        strengthButton.interactable = false;
+
+        stoneworkerSub = 5;
+        minerSub = 7;
+        strengthSub = 15;
     }
 
     void Update()
@@ -48,26 +51,8 @@ public class MoneyManager : MonoBehaviour
     public void AddMoney(int moneyToAdd)
     {
         currentMoney += moneyToAdd;
-
-        if (currentMoney >= 15)
-        {
-            Debug.Log("larger than 15");
-            stoneworkerButton.interactable = true;
-            minerButton.interactable = true;
-            powerButton.interactable = true;
-        }
-        else if (currentMoney >= 7)
-        {
-            Debug.Log("larger than 7");
-            stoneworkerButton.interactable = true;
-            minerButton.interactable = true;
-        }
-
-        else if (currentMoney >= 5 && currentMoney < 7)
-        {
-            Debug.Log("between 5-7");
-            stoneworkerButton.interactable = true;
-        }
+        CheckMoney();
+        SuperworkerCheck();
     }
 
     public void StoneworkerFee()
@@ -76,6 +61,7 @@ public class MoneyManager : MonoBehaviour
         SubtractMoney(stoneworkerSub);
         stoneworkerSub += 3;
         stoneworkerMoneyText.text = stoneworkerSub.ToString();
+        CheckMoney();
     }
 
     public void MinerFee()
@@ -84,6 +70,7 @@ public class MoneyManager : MonoBehaviour
         SubtractMoney(minerSub);
         minerSub += 3;
         minerMoneyText.text = minerSub.ToString();
+        CheckMoney();
     }
 
     public void StrengthFee()
@@ -92,11 +79,12 @@ public class MoneyManager : MonoBehaviour
         SubtractMoney(strengthSub);
         strengthSub += 3;
         strengthMoneyText.text = strengthSub.ToString();
+        CheckMoney();
     }
 
-    public void SubtractMoney(int subtractAmount) 
+    public void SubtractMoney(int subtractAmount)
     {
-        if(currentMoney - subtractAmount < 0)
+        if (currentMoney - subtractAmount < 0)
         {
             Debug.Log("Not enough money");
         }
@@ -107,8 +95,49 @@ public class MoneyManager : MonoBehaviour
             {
                 stoneworkerButton.interactable = false;
                 minerButton.interactable = false;
-                powerButton.interactable = false;
+                strengthButton.interactable = false;
             }
         }
+    }
+
+    public void SuperworkerCheck() {
+        if (currentMoney >= 100 && gameUI.progress >= 0.5 && GameManager.instance.superworkerButton.gameObject.activeSelf == true)
+        {
+            superworkerButton.interactable = true;
+        }
+        else
+        {
+            superworkerButton.interactable = false;
+        }
+    }
+
+    void CheckMoney()
+    {
+        if (currentMoney >= stoneworkerSub)
+        {
+            stoneworkerButton.interactable = true;
+        }
+        else if (currentMoney < stoneworkerSub)
+        {
+            stoneworkerButton.interactable = false;
+        }
+        if (currentMoney >= minerSub)
+        { 
+            minerButton.interactable = true;
+        }
+        else if (currentMoney < minerSub)
+        {
+            minerButton.interactable = false;
+        }
+        if (currentMoney >= strengthSub)
+        {
+            strengthButton.interactable = true;
+        }
+        else if (currentMoney < strengthSub)
+        {
+            strengthButton.interactable = false;
+        }
+
+        
     }
 }

@@ -19,7 +19,7 @@ public class DiggerSpawner : MonoBehaviour
     {
         if (diggers.Count == 17)
         {
-            Debug.Log("not enough space for diggers");
+            Debug.Log("not enough space for diggers");  //butonun ustunde ekranda bastirilabilir
             moneyManager.isFull = true;
         }
         GameObject digger = Instantiate(diggerPrefab,transform.position,Quaternion.identity);

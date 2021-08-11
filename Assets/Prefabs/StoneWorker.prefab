@@ -612,6 +612,9 @@ MonoBehaviour:
   target: {fileID: 0}
   otherObj: {fileID: 0}
   isPicked: 0
+  currentCubeNumber: 0
+  totalCubeNumber: 0
+  moneyImage: {fileID: 8273327013803764917, guid: 84840cbd68e84394eb9bcfd0b3523ce7, type: 3}
 --- !u!195 &-7486034929172054953
 NavMeshAgent:
   m_ObjectHideFlags: 0

@@ -2,13 +2,15 @@ using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
 using UnityEngine;
+using UnityEngine.UI;
 
 public class Build : MonoBehaviour
 {
     public static Build Instance;
     public List<GameObject> building;
     public List<GameObject> sortedBuilding = new List<GameObject>();
-    int itemNum;
+    public int itemNum;
+
 
     private void Awake()
     {
@@ -17,7 +19,7 @@ public class Build : MonoBehaviour
             Instance = this;
         }
     }
-
+    
     void Start()
     {
         foreach(GameObject g in building)
@@ -27,7 +29,6 @@ public class Build : MonoBehaviour
 
         //sortedBuilding = building.OrderBy(x => Vector2.Distance(transform.position, x.transform.position)).ToList();
         sortedBuilding = building.OrderBy(platform => platform.transform.position.y).ToList();
-
     }
 
     public void Activate()

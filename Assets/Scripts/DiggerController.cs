@@ -39,8 +39,6 @@ public class DiggerController : MonoBehaviour
                         if (diggingZone.digPointIdentifiers[i].isEmpty)
                         {
                             // nav mesh diggingpoints[i] ye gidecek
-
-                            Debug.Log("entered big stone");
                             navMeshAgent.SetDestination(diggingZone.diggerPoints[i].position);
 
                             diggingZone.digPointIdentifiers[i].isEmpty = false;
@@ -54,7 +52,6 @@ public class DiggerController : MonoBehaviour
                 if (check2 == false)
                 {
                     check2 = true;
-                    Debug.Log("dig point");
                     anim = GetComponent<Animator>();
                     GetComponent<CapsuleCollider>().enabled = false;
                     anim.SetBool("dig", true);

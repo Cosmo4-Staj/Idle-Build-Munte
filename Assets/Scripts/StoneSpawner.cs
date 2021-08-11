@@ -6,7 +6,6 @@ public class StoneSpawner : MonoBehaviour
 { 
     public static StoneSpawner Instance;
     public List<GameObject> stones;
-    //public List<Transform> stonePoints = new List<Transform>();
 
     private void Awake()
     {

@@ -9,6 +9,7 @@ public class GameUI : MonoBehaviour
 
     public float progress;
 
+    //Level loading bar
     public void SetProgress(float fillAmount)
     {
         levelSlider.fillAmount = fillAmount;

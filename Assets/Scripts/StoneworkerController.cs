@@ -7,8 +7,6 @@ using UnityEngine.UI;
 public class StoneworkerController : MonoBehaviour
 {
     //[Tooltip("")]
-
-    StoneSpawner stoneSpawner;
     Build build;
 
     Animator anim;
@@ -28,7 +26,6 @@ public class StoneworkerController : MonoBehaviour
     void Start()
     {
         pickedUpStone.SetActive(false);
-        stoneSpawner = FindObjectOfType<StoneSpawner>();
         totalCubeNumber = FindObjectOfType<Build>().building.Count;
         build = FindObjectOfType<Build>();
         anim = gameObject.GetComponent<Animator>();
@@ -99,78 +96,3 @@ public class StoneworkerController : MonoBehaviour
     }
 
 }
-
-
-
-
-
-
-
-
-
-//-------------------------------------------------------------------------
-
-/*public class StoneworkerController : MonoBehaviour
-{
-    public NavMeshAgent navMeshAgent;
-    //public Transform target;
-
-    StoneSpawner stoneSpawner;
-
-    Animator anim;
-
-    [SerializeField] Transform stoneCarryPos;
-    public Transform targetStone;
-
-    void Start()
-    {
-        stoneSpawner = FindObjectOfType<StoneSpawner>();
-        anim = gameObject.GetComponent<Animator>();
-    }
-
-    // Update is called once per frame
-    void Update()
-    {
-        FindStone();
-
-        if (targetStone)
-        {
-            navMeshAgent.SetDestination(targetStone.position);
-            anim.SetBool("walk", true);
-        }
-        else
-        {
-            anim.SetBool("walk", false);
-        }
-
-    }
-
-    void OnTriggerEnter(Collider other)
-    {
-
-    }
-
-    private void OnCollisionEnter(Collision collision)
-    {
-        GameObject otherObj = collision.gameObject;
-
-        switch (otherObj.tag)
-        {
-            case "Pickup":
-                //tasa degdiginde vagonda tas belirecek ve daha sonrasinda yapim alanina yonelecek
-                Debug.Log("tasa degdi");
-
-                break;
-        }
-    }
-
-    void FindStone()
-    {
-        if (targetStone || StoneSpawner.Instance.stones.Count <= 0) return;
-
-        targetStone = StoneSpawner.Instance.stonePoints[0];
-
-        StoneSpawner.Instance.stonePoints.Remove(targetStone);
-    }
-}
-*/

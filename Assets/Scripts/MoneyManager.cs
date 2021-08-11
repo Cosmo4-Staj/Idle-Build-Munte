@@ -55,6 +55,9 @@ public class MoneyManager : MonoBehaviour
         SuperworkerCheck();
     }
 
+    //---------------------------------------------------------------------------------------------------------------------
+
+    //Since there is an increase in price every time the button is pressed, to see if the money is enough each time
     public void StoneworkerFee()
     {
         int.TryParse(this.stoneworkerMoneyText.text, out stoneworkerSub);
@@ -82,6 +85,9 @@ public class MoneyManager : MonoBehaviour
         CheckMoney();
     }
 
+    //---------------------------------------------------------------------------------------------------------------------
+
+    //payment for workers in each button tap
     public void SubtractMoney(int subtractAmount)
     {
         if (currentMoney - subtractAmount < 0)

@@ -11,9 +11,11 @@ public class SuperworkerController : MonoBehaviour
     public NavMeshAgent navMeshAgent;
     public Transform target;
     public GameObject stonePrefab;
+
     Animator anim;
     StoneSpawner stoneSpawner;
 
+    //working faster than normal diggers
     public float superworkerTime = 4f;
     [SerializeField] int superStoneCount = 3;
 
@@ -29,6 +31,7 @@ public class SuperworkerController : MonoBehaviour
 
         switch (otherObj.tag)
         {
+            //to check empty spaces for super diggers to go and dig
             case "BigStone":
                 if (check == false)
                 {
@@ -39,7 +42,6 @@ public class SuperworkerController : MonoBehaviour
                     {
                         if (diggingZone.digPointIdentifiers[i].isEmpty)
                         {
-                            Debug.Log("entered big stone");
                             navMeshAgent.SetDestination(diggingZone.diggerPoints[i].position);
 
                             diggingZone.digPointIdentifiers[i].isEmpty = false;

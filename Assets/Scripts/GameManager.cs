@@ -64,6 +64,7 @@ public class GameManager : MonoBehaviour
         }
     }
 
+    //Power Button
     public void AddStrength()
     {
         spawnStartTime -= 0.1f;
@@ -106,7 +107,9 @@ public class GameManager : MonoBehaviour
             PlayerPrefs.SetInt("LevelNo", levelCount);
         }
         Instantiate(Levels[levelCount], Vector3.zero, Quaternion.identity);
-        //Instantiate(Levels[PlayerPrefs.GetInt("LevelNo")], transform.position, Quaternion.identity);
+
+
+        //if level is 5 or 10, superworker button is active based on its price and percentage of building
 
         if (!(PlayerPrefs.GetInt("LevelNo") == 4 || PlayerPrefs.GetInt("LevelNo") == 9))
         {
@@ -148,8 +151,6 @@ public class GameManager : MonoBehaviour
     }
     public void LoadWorkers()
     {
-        //buraya sonra tekrardan bak
-
         //FOR DIGGERS
         diggersCount = PlayerPrefs.GetInt("DiggersCount");
         if (diggersCount - 1 < 3)
@@ -185,6 +186,7 @@ public class GameManager : MonoBehaviour
         }
     }
 
+    //Next Level screen -> to calculate star numbers based on earned money
     public void StarCount()
     {
         star1.gameObject.SetActive(false);

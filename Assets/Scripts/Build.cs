@@ -10,6 +10,9 @@ public class Build : MonoBehaviour
     public List<GameObject> building;
     public List<GameObject> sortedBuilding = new List<GameObject>();
     public int itemNum;
+    public ParticleSystem smoke;
+
+    [SerializeField] float lifeTime = 3f;
 
 
     private void Awake()
@@ -18,6 +21,8 @@ public class Build : MonoBehaviour
         {
             Instance = this;
         }
+
+        
     }
     
     void Start()
@@ -40,5 +45,7 @@ public class Build : MonoBehaviour
             GameManager.instance.OnLevelCompleted();
         }
         sortedBuilding[itemNum].SetActive(true);
+        ParticleSystem smokeInstance = Instantiate(smoke, sortedBuilding[itemNum].transform.position, sortedBuilding[itemNum].transform.rotation);
+        Destroy(smokeInstance.gameObject, lifeTime);
     }
 }

@@ -86,7 +86,7 @@ public class GameManager : MonoBehaviour
         SaveWorkers();
         OnLevelCompleted();
         levelCount++;
-        PlayerPrefs.SetInt("LevelNo", levelCount);
+        PlayerPrefs.SetInt("level", levelCount);
         SceneManager.LoadScene(SceneManager.GetActiveScene().buildIndex);
         Time.timeScale = 1;
     }
@@ -99,24 +99,24 @@ public class GameManager : MonoBehaviour
     void LoadLevel()
     {
 
-        levelCount = PlayerPrefs.GetInt("LevelNo", 0);
+        levelCount = PlayerPrefs.GetInt("level", 0);
 
         if (levelCount > Levels.Count - 1 || levelCount < 0)
         {
             levelCount = 0;
-            PlayerPrefs.SetInt("LevelNo", levelCount);
+            PlayerPrefs.SetInt("level", levelCount);
         }
         Instantiate(Levels[levelCount], Vector3.zero, Quaternion.identity);
 
 
         //if level is 5 or 10, superworker button is active based on its price and percentage of building
 
-        if (!(PlayerPrefs.GetInt("LevelNo") == 4 || PlayerPrefs.GetInt("LevelNo") == 9))
+        if (!(PlayerPrefs.GetInt("level") == 4 || PlayerPrefs.GetInt("level") == 9))
         {
             superworkerButton.gameObject.SetActive(false);
         }
 
-        if (PlayerPrefs.GetInt("LevelNo") == 4 || PlayerPrefs.GetInt("LevelNo") == 9)
+        if (PlayerPrefs.GetInt("level") == 4 || PlayerPrefs.GetInt("level") == 9)
         {
             superworkerButton.gameObject.SetActive(true);
             superworkerButton.interactable = false;

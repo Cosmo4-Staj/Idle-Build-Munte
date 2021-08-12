@@ -24,6 +24,7 @@ public class StoneworkerController : MonoBehaviour
     public int totalCubeNumber;
 
     public GameObject waitingSpot;
+    public bool isTrigger;
 
     void Start()
     {
@@ -42,7 +43,14 @@ public class StoneworkerController : MonoBehaviour
         currentCubeNumber = build.itemNum;
         FindObjectOfType<GameUI>().SetProgress(currentCubeNumber /(float) totalCubeNumber);
 
-        anim.SetBool("walk", false);
+        if (!isTrigger)
+        {
+            anim.SetBool("walk", true);
+        }
+        else
+        {
+            anim.SetBool("walk", false);
+        }
 
         //if there is no target find stone and set target to this stone
         if (target == null)
@@ -55,12 +63,12 @@ public class StoneworkerController : MonoBehaviour
             {
                 waitingSpot = GameObject.FindGameObjectWithTag("WaitingSpot");
                 navMeshAgent.SetDestination(waitingSpot.transform.position);
+
             }
         }
         //movement to the target with navmesh
         else
         {
-            anim.SetBool("walk", true);
             navMeshAgent.SetDestination(target.transform.position);
         }
         
@@ -97,6 +105,20 @@ public class StoneworkerController : MonoBehaviour
                 moneyManager.AddMoney(2);
                 break;
 
+        }
+    }
+    private void OnTriggerStay(Collider other)
+    {
+        if (other.tag == "WaitingSpot")
+        {
+            isTrigger = true;
+        }
+    }
+    private void OnTriggerExit(Collider other)
+    {
+        if(other.tag == "WaitingSpot")
+        {
+            isTrigger = false;
         }
     }
 

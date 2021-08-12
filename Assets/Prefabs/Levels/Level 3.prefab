@@ -1568,6 +1568,8 @@ MonoBehaviour:
   - {fileID: 532894993949230786}
   sortedBuilding: []
   itemNum: 0
+  smoke: {fileID: 1916277683816018918, guid: 727df6332c5cb8044993c9547bb4c0e5, type: 3}
+  lifeTime: 3
 --- !u!1 &973945127935713275
 GameObject:
   m_ObjectHideFlags: 0

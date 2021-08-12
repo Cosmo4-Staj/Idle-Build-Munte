@@ -5156,7 +5156,7 @@ GameObject:
   - component: {fileID: 1630343366}
   - component: {fileID: 1630343365}
   m_Layer: 5
-  m_Name: Image
+  m_Name: Stoneworker Count Image
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -5179,7 +5179,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.7314445, y: 0.8715774}
   m_AnchorMax: {x: 0.9796296, y: 0.95670605}
-  m_AnchoredPosition: {x: 0.000030517578, y: 0}
+  m_AnchoredPosition: {x: 0.000030517578, y: 3.7999878}
   m_SizeDelta: {x: 84.4177, y: 50.5135}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &1630343365

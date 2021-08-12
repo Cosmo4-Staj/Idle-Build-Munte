@@ -12,6 +12,7 @@ TagManager:
   - Pickup
   - Stoneworker
   - DropPoint
+  - WaitingSpot
   layers:
   - Default
   - TransparentFX

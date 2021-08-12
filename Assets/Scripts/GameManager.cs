@@ -98,7 +98,7 @@ public class GameManager : MonoBehaviour
 
     void LoadLevel()
     {
-        
+
         levelCount = PlayerPrefs.GetInt("LevelNo", 0);
 
         if (levelCount > Levels.Count - 1 || levelCount < 0)
@@ -146,43 +146,24 @@ public class GameManager : MonoBehaviour
 
     public void SaveWorkers()
     {
-        PlayerPrefs.SetInt("DiggersCount",diggerSpawner.diggers.Count);
+        PlayerPrefs.SetInt("DiggersCount", diggerSpawner.diggers.Count);
         PlayerPrefs.SetInt("StoneworkersCount", stoneworkerSpawner.stoneworkers.Count);
     }
     public void LoadWorkers()
     {
         //FOR DIGGERS
         diggersCount = PlayerPrefs.GetInt("DiggersCount");
-        if (diggersCount - 1 < 3)
+
+        for (int i = 0; i < diggersCount / 3 - 1; i++)
         {
-            for (int i = 0; i < diggersCount - 1; i++)
-            {
-                diggerSpawner.DiggerSpawn();
-            }
-        }
-        else
-        {
-            for (int i = 0; i < diggersCount / 3 - 1; i++)
-            {
-                diggerSpawner.DiggerSpawn();
-            }
+            diggerSpawner.DiggerSpawn();
         }
 
         //FOR STONEWORKERS
         stoneworkersCount = PlayerPrefs.GetInt("StoneworkersCount");
-        if (stoneworkersCount - 1 < 3)
+        for (int i = 0; i < stoneworkersCount / 3 - 1; i++)
         {
-            for (int i = 0; i < stoneworkersCount - 1; i++)
-            {
-                stoneworkerSpawner.StoneworkerSpawn();
-            }
-        }
-        else
-        {
-            for (int i = 0; i < stoneworkersCount / 3 - 1; i++)
-            {
-                stoneworkerSpawner.StoneworkerSpawn();
-            }
+            stoneworkerSpawner.StoneworkerSpawn();
         }
     }
 
@@ -199,7 +180,7 @@ public class GameManager : MonoBehaviour
         {
             star1.gameObject.SetActive(true);
         }
-        else if (starMoney >= 50 && starMoney <100)
+        else if (starMoney >= 50 && starMoney < 100)
         {
             star1.gameObject.SetActive(true);
             star2.gameObject.SetActive(true);
@@ -207,9 +188,9 @@ public class GameManager : MonoBehaviour
         else if (starMoney >= 100)
         {
             star1.gameObject.SetActive(true);
-            star2.gameObject.SetActive(true); 
+            star2.gameObject.SetActive(true);
             star3.gameObject.SetActive(true);
         }
-    }  
-   
+    }
+
 }

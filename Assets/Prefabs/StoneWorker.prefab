@@ -614,7 +614,6 @@ MonoBehaviour:
   isPicked: 0
   currentCubeNumber: 0
   totalCubeNumber: 0
-  moneyImage: {fileID: 8273327013803764917, guid: 84840cbd68e84394eb9bcfd0b3523ce7, type: 3}
 --- !u!195 &-7486034929172054953
 NavMeshAgent:
   m_ObjectHideFlags: 0
@@ -648,8 +647,8 @@ BoxCollider:
   m_IsTrigger: 1
   m_Enabled: 1
   serializedVersion: 2
-  m_Size: {x: 0.84844387, y: 2.0284534, z: 2.050492}
-  m_Center: {x: -0.039094448, y: 0.97492456, z: 0.6755904}
+  m_Size: {x: 0.84844387, y: 2.0284534, z: 1.4512016}
+  m_Center: {x: -0.039094448, y: 0.97492456, z: 0.97523564}
 --- !u!114 &7088728294168092568
 MonoBehaviour:
   m_ObjectHideFlags: 0

@@ -23,6 +23,8 @@ public class StoneworkerController : MonoBehaviour
     public int currentCubeNumber;
     public int totalCubeNumber;
 
+    public GameObject waitingSpot;
+
     void Start()
     {
         pickedUpStone.SetActive(false);
@@ -40,16 +42,25 @@ public class StoneworkerController : MonoBehaviour
         currentCubeNumber = build.itemNum;
         FindObjectOfType<GameUI>().SetProgress(currentCubeNumber /(float) totalCubeNumber);
 
-        anim.SetBool("walk", true);
+        anim.SetBool("walk", false);
 
         //if there is no target find stone and set target to this stone
         if (target == null)
         {
-            target = GameObject.FindGameObjectWithTag("Pickup");
+            if (GameObject.FindGameObjectWithTag("Pickup"))
+            {
+                target = GameObject.FindGameObjectWithTag("Pickup");
+            }
+            else
+            {
+                waitingSpot = GameObject.FindGameObjectWithTag("WaitingSpot");
+                navMeshAgent.SetDestination(waitingSpot.transform.position);
+            }
         }
         //movement to the target with navmesh
         else
         {
+            anim.SetBool("walk", true);
             navMeshAgent.SetDestination(target.transform.position);
         }
         

@@ -60,6 +60,7 @@ public class MoneyManager : MonoBehaviour
     //Since there is an increase in price every time the button is pressed, to see if the money is enough each time
     public void StoneworkerFee()
     {
+
         int.TryParse(this.stoneworkerMoneyText.text, out stoneworkerSub);
         SubtractMoney(stoneworkerSub);
         stoneworkerSub += 3;

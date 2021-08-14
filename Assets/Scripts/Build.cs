@@ -38,14 +38,17 @@ public class Build : MonoBehaviour
 
     public void Activate()
     {
+
         itemNum++;
         if (itemNum == sortedBuilding.Count)
         {
             itemNum = 0;
             GameManager.instance.OnLevelCompleted();
         }
-        sortedBuilding[itemNum].SetActive(true);
         ParticleSystem smokeInstance = Instantiate(smoke, sortedBuilding[itemNum].transform.position, sortedBuilding[itemNum].transform.rotation);
         Destroy(smokeInstance.gameObject, lifeTime);
+
+        sortedBuilding[itemNum].SetActive(true);
+        
     }
 }

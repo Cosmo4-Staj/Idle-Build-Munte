@@ -2,6 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using TMPro;
 using UnityEngine;
+using UnityEngine.EventSystems;
 using UnityEngine.SceneManagement;
 using UnityEngine.UI;
 
@@ -28,6 +29,7 @@ public class GameManager : MonoBehaviour
     DiggerSpawner diggerSpawner;
     StoneworkerSpawner stoneworkerSpawner;
 
+
     private int diggersCount;
     private int stoneworkersCount;
 
@@ -37,6 +39,11 @@ public class GameManager : MonoBehaviour
 
     //Superworker
     public Button superworkerButton;
+    public bool isTouched = false;
+
+
+    public ParticleSystem finishParticles;
+    public AudioClip finishSound;
 
     void Start()
     {
@@ -50,10 +57,9 @@ public class GameManager : MonoBehaviour
         moneyManager = FindObjectOfType<MoneyManager>();
         diggerSpawner = FindObjectOfType<DiggerSpawner>();
         stoneworkerSpawner = FindObjectOfType<StoneworkerSpawner>();
-
+        
         diggerSpawner.DiggerSpawn();
         stoneworkerSpawner.StoneworkerSpawn();
-
     }
 
     void Awake()
@@ -72,15 +78,38 @@ public class GameManager : MonoBehaviour
         moneyManager.StrengthFee();
     }
 
+
     void Update()
     {
         if (!GameManager.isGameStarted || GameManager.isGameEnded)
         {
             return;
         }
-
+        
+        if(!GameManager.isGameEnded){
+            //to speed up game in each tap to screen
+            if (Input.touchCount > 0 && Input.GetTouch(0).phase == TouchPhase.Began)
+            {
+                if (Input.GetTouch(0).position.y > 342)
+                {
+                    Time.timeScale = 2;
+                    isTouched = true;
+                    StartCoroutine(RevertTime(0.5f));
+                }
+            }
+        }
+        
         LevelsText.GetComponent<TextMeshProUGUI>().SetText("Level " + (levelCount + 1).ToString());
     }
+
+    //reverting the time to normal after each touch
+    IEnumerator RevertTime(float time)
+    {
+        yield return new WaitForSeconds(time);
+        isTouched = false;
+        Time.timeScale = 1;
+    }
+
     public void NextLevel()
     {
         SaveWorkers();
@@ -98,7 +127,6 @@ public class GameManager : MonoBehaviour
 
     void LoadLevel()
     {
-
         levelCount = PlayerPrefs.GetInt("level", 0);
 
         if (levelCount > Levels.Count - 1 || levelCount < 0)
@@ -136,12 +164,21 @@ public class GameManager : MonoBehaviour
 
     public void OnLevelCompleted()
     {
+        StartCoroutine(FinishParticles());
+        isGameEnded = true;
         StarCount();
-        Time.timeScale = 0;
         StartScreen.SetActive(false);
         GameScreen.SetActive(false);
         WinScreen.SetActive(true);
-        //isGameEnded=true;
+    }
+
+    IEnumerator FinishParticles()
+    {
+
+        AudioSource.PlayClipAtPoint(finishSound, transform.position, 1);
+        Instantiate(finishParticles);
+        yield return new WaitForSeconds(1f);
+        Time.timeScale = 0;
     }
 
     public void SaveWorkers()

@@ -11,6 +11,7 @@ public class StoneworkerController : MonoBehaviour
 
     Animator anim;
     MoneyManager moneyManager;
+    //TrailRenderer trailRenderer;
 
     public NavMeshAgent navMeshAgent;
     public GameObject pickedUpStone;
@@ -26,6 +27,7 @@ public class StoneworkerController : MonoBehaviour
     public GameObject waitingSpot;
     public bool isTrigger;
 
+
     void Start()
     {
         pickedUpStone.SetActive(false);
@@ -34,11 +36,22 @@ public class StoneworkerController : MonoBehaviour
         anim = gameObject.GetComponent<Animator>();
         moneyManager = FindObjectOfType<MoneyManager>();
 
+        gameObject.GetComponent<TrailRenderer>().enabled = false;
+
         currentCubeNumber = 0;
     }
 
     void Update()
     {
+        if (GameManager.instance.isTouched)
+        {
+            gameObject.GetComponent<TrailRenderer>().enabled = true;
+        }
+        else
+        {
+            gameObject.GetComponent<TrailRenderer>().enabled = false;
+        }
+
         //for progress bar
         currentCubeNumber = build.itemNum;
         FindObjectOfType<GameUI>().SetProgress(currentCubeNumber /(float) totalCubeNumber);

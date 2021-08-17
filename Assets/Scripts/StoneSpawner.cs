@@ -3,9 +3,12 @@ using System.Collections.Generic;
 using UnityEngine;
 
 public class StoneSpawner : MonoBehaviour
-{ 
+{
     public static StoneSpawner Instance;
     public List<GameObject> stones;
+
+    public GameObject minerImage;
+    public AudioSource minerCoinSound;
 
     private void Awake()
     {
@@ -13,6 +16,25 @@ public class StoneSpawner : MonoBehaviour
         {
             Instance = this;
         }
+    }
+
+    void Start()
+    {
+        minerImage.SetActive(false);
+    }
+    public void ActivateImage()
+    {
+        minerImage.SetActive(true);
+        minerCoinSound.pitch = (Random.Range(.5f, 1.5f));
+        minerCoinSound.Play();
+        StartCoroutine(Deactivate());
+
+    }
+
+    IEnumerator Deactivate()
+    {
+        yield return new WaitForSeconds(1f);
+        minerImage.SetActive(false);
     }
 
     public void RemoveStone(GameObject obj)

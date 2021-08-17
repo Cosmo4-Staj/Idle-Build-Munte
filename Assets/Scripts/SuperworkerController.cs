@@ -16,8 +16,10 @@ public class SuperworkerController : MonoBehaviour
     StoneSpawner stoneSpawner;
 
     //working faster than normal diggers
-    public float superworkerTime = 4f;
-    [SerializeField] int superStoneCount = 3;
+    public float superworkerTime = 3f;
+    [SerializeField] int superStoneCount = 5;
+
+    public GameObject hit;
 
     void Start()
     {
@@ -55,7 +57,7 @@ public class SuperworkerController : MonoBehaviour
                 if (check2 == false)
                 {
                     check2 = true;
-                    Debug.Log("dig point");
+                   
                     anim = GetComponent<Animator>();
                     GetComponent<CapsuleCollider>().enabled = false;
                     anim.SetBool("dig", true);
@@ -68,9 +70,11 @@ public class SuperworkerController : MonoBehaviour
     IEnumerator Spawn(float time)
     {
         yield return new WaitForSeconds(time);
+        hit.gameObject.SetActive(true);
         while (true)
         {
-            for(int i = 0; i < superStoneCount; i++)
+            
+            for (int i = 0; i < superStoneCount; i++)
             {
                 GameObject stone = Instantiate(stonePrefab, stoneSpawner.transform.position, Quaternion.identity, stoneSpawner.transform);
                 stoneSpawner.stones.Add(stone);
@@ -78,6 +82,5 @@ public class SuperworkerController : MonoBehaviour
             
             yield return new WaitForSeconds(superworkerTime);
         }
-
     }
 }

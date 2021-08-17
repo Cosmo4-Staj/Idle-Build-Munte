@@ -13,11 +13,15 @@ public class DiggerController : MonoBehaviour
     public GameObject stonePrefab;
     Animator anim;
     StoneSpawner stoneSpawner;
+    MoneyManager moneyManager;
+
 
     void Start()
     {
         navMeshAgent.SetDestination(target.position);
         stoneSpawner = FindObjectOfType<StoneSpawner>();
+        moneyManager = FindObjectOfType<MoneyManager>();
+
     }
 
     void OnTriggerEnter(Collider other)
@@ -67,6 +71,8 @@ public class DiggerController : MonoBehaviour
         yield return new WaitForSeconds(time);
         while (true)
         {
+            stoneSpawner.ActivateImage();
+            moneyManager.AddMoney(1);
             GameObject stone = Instantiate(stonePrefab, stoneSpawner.transform.position, Quaternion.identity, stoneSpawner.transform);
             stoneSpawner.stones.Add(stone);
             yield return new WaitForSeconds(GameManager.instance.spawnRepeatTime);

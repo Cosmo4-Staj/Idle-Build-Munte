@@ -41,7 +41,7 @@ public class GameManager : MonoBehaviour
     public Button superworkerButton;
     public bool isTouched = false;
 
-
+    public GameObject speedImage;
     public ParticleSystem finishParticles;
     public AudioClip finishSound;
 
@@ -50,6 +50,8 @@ public class GameManager : MonoBehaviour
         isGameStarted = false;
         isGameEnded = false;
         LoadLevel();
+
+        LevelsText.GetComponent<TextMeshProUGUI>().SetText("Level " + (levelCount + 1).ToString());
     }
 
     void StartGame()
@@ -57,7 +59,8 @@ public class GameManager : MonoBehaviour
         moneyManager = FindObjectOfType<MoneyManager>();
         diggerSpawner = FindObjectOfType<DiggerSpawner>();
         stoneworkerSpawner = FindObjectOfType<StoneworkerSpawner>();
-        
+
+        speedImage.gameObject.SetActive(false);
         diggerSpawner.DiggerSpawn();
         stoneworkerSpawner.StoneworkerSpawn();
     }
@@ -73,11 +76,18 @@ public class GameManager : MonoBehaviour
     //Power Button
     public void AddStrength()
     {
+        speedImage.gameObject.SetActive(true);
         spawnStartTime -= 0.1f;
         spawnRepeatTime -= 0.1f;
         moneyManager.StrengthFee();
+        StartCoroutine(SpeedUp());
     }
 
+    IEnumerator SpeedUp()
+    {
+        yield return new WaitForSeconds(1f);
+        speedImage.gameObject.SetActive(false);
+    }
 
     void Update()
     {
@@ -99,7 +109,7 @@ public class GameManager : MonoBehaviour
             }
         }
         
-        LevelsText.GetComponent<TextMeshProUGUI>().SetText("Level " + (levelCount + 1).ToString());
+        
     }
 
     //reverting the time to normal after each touch
@@ -127,18 +137,16 @@ public class GameManager : MonoBehaviour
 
     void LoadLevel()
     {
-        levelCount = PlayerPrefs.GetInt("level", 0);
+        levelCount = PlayerPrefs.GetInt("level");
 
-        if (levelCount > Levels.Count - 1 || levelCount < 0)
+        if (levelCount >= Levels.Count || levelCount < 0)
         {
             levelCount = 0;
             PlayerPrefs.SetInt("level", levelCount);
         }
         Instantiate(Levels[levelCount], Vector3.zero, Quaternion.identity);
 
-
         //if level is 5 or 10, superworker button is active based on its price and percentage of building
-
         if (!(PlayerPrefs.GetInt("level") == 4 || PlayerPrefs.GetInt("level") == 9))
         {
             superworkerButton.gameObject.SetActive(false);
@@ -160,6 +168,8 @@ public class GameManager : MonoBehaviour
         StartScreen.SetActive(false);
         GameScreen.SetActive(true);
         WinScreen.SetActive(false);
+
+        moneyManager.CheckMoney();
     }
 
     public void OnLevelCompleted()
@@ -174,7 +184,6 @@ public class GameManager : MonoBehaviour
 
     IEnumerator FinishParticles()
     {
-
         AudioSource.PlayClipAtPoint(finishSound, transform.position, 1);
         Instantiate(finishParticles);
         yield return new WaitForSeconds(1f);
@@ -183,6 +192,9 @@ public class GameManager : MonoBehaviour
 
     public void SaveWorkers()
     {
+        //saving current total money for next levels
+        PlayerPrefs.SetInt("TotalMoney", moneyManager.currentMoney);
+
         PlayerPrefs.SetInt("DiggersCount", diggerSpawner.diggers.Count);
         PlayerPrefs.SetInt("StoneworkersCount", stoneworkerSpawner.stoneworkers.Count);
     }
@@ -213,16 +225,16 @@ public class GameManager : MonoBehaviour
 
         int starMoney = moneyManager.currentMoney;
 
-        if (starMoney < 50)
+        if (starMoney < 100)
         {
             star1.gameObject.SetActive(true);
         }
-        else if (starMoney >= 50 && starMoney < 100)
+        else if (starMoney >= 100 && starMoney < 300)
         {
             star1.gameObject.SetActive(true);
             star2.gameObject.SetActive(true);
         }
-        else if (starMoney >= 100)
+        else if (starMoney >= 300)
         {
             star1.gameObject.SetActive(true);
             star2.gameObject.SetActive(true);

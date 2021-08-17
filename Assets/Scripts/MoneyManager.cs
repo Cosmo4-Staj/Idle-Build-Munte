@@ -36,6 +36,16 @@ public class MoneyManager : MonoBehaviour
         stoneworkerSub = 5;
         minerSub = 7;
         strengthSub = 15;
+
+        if (PlayerPrefs.GetInt("level") == 0)
+        {
+            currentMoney = 0;
+        }
+        else
+        {
+            currentMoney = PlayerPrefs.GetInt("TotalMoney");
+        }
+
     }
 
     void Update()
@@ -118,7 +128,7 @@ public class MoneyManager : MonoBehaviour
         }
     }
 
-    void CheckMoney()
+    public void CheckMoney()
     {
         if (currentMoney >= stoneworkerSub)
         {
